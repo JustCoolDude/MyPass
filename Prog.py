@@ -20,6 +20,7 @@ class DataItem:
 @dataclass
 class Storage:
     file_path: str = "P.txt"
+
     def del_data(self, index):
         with open(self.file_path, 'r', encoding='utf-8') as data_base:
             data_list = [i.strip().split('\t') for i in data_base.readlines()]
@@ -31,9 +32,8 @@ class Storage:
                 data_list.pop(index)
                 with open(self.file_path, 'w', encoding='utf-8') as data_base:
                     for string in data_list:
-                        data_base.write('\t'.join(string)+'\n')
+                        data_base.write('\t'.join(string) + '\n')
                 print(f"данные сайта {site} успешно удалены")
-
 
     def get_data(self):
         """
@@ -83,26 +83,59 @@ class StorageOperator:
 
         if not found_request: print(f'Сайт {reqest} не найден')
 
-
     def write_data(self, wrap_data: DataItem):
         formatted_data = self._data_coding(wrap_data)
         self.storage.write(formatted_data)
 
 
+@dataclass
+class Program:
+    operation = StorageOperator()
+    storag = Storage()
+
+    def do_choice(self, choise: int):
+
+        def add_alement():
+            data_item = DataItem()
+            data_item.collect_data()
+            self.operation.write_data(data_item)
+
+        def print_all():
+            self.operation.print_all()
+
+        def del_element():
+            self.operation.find_data(input("Введите имя сайта для удаления: "), "erase")
+
+        def find_site():
+           self.operation.find_data(input("Введите имя сайта").strip().lower())
+
+        function_list = {1: add_alement, 2: find_site, 3:del_element, 4:print_all}
+        if choise <= len(function_list):
+            return function_list[choise]()
+        else:
+            print('Такой команды нет')
+
 if __name__ == '__main__':
 
-    operation = StorageOperator()
-    storage = Storage()
+    done= False
+    while not done:
+        program = Program()
+        print("""
+Выберите действие:
+(1) Добавить элемент
+(2) Найти данные
+(3) Удалить данные
+(4) Вывести весь список
+(5) Exit
+    """)
+        try:
+            choice = int(input())
+        except ValueError:
+            print("Неверный ввод")
+        else:
+            if choice   != 5:
+                program.do_choice(choice)
+                done = False if input('Продолжить? y/n ').lower() == 'y' else True
+            else:
+                done = True
 
-
-    # data_item = DataItem()
-    # data_item.collect_data()
-    # operation.write_data(data_item)
-    #
-    #
-    #operation.print_all()
-    #
-    #
-    operation.find_data(input("Введите имя сайта").strip().lower())
-    #
-    # operation.find_data(input("Введите имя сайта"), "erase")
