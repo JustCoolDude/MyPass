@@ -107,17 +107,18 @@ class Program:
             self.operation.find_data(input("Введите имя сайта для удаления: "), "erase")
 
         def find_site():
-           self.operation.find_data(input("Введите имя сайта").strip().lower())
+            self.operation.find_data(input("Введите имя сайта").strip().lower())
 
-        function_list = {1: add_alement, 2: find_site, 3:del_element, 4:print_all}
+        function_list = {1: add_alement, 2: find_site, 3: del_element, 4: print_all}
         if choise <= len(function_list):
             return function_list[choise]()
         else:
             print('Такой команды нет')
 
+
 if __name__ == '__main__':
 
-    done= False
+    done = False
     while not done:
         program = Program()
         print("""
@@ -133,9 +134,8 @@ if __name__ == '__main__':
         except ValueError:
             print("Неверный ввод")
         else:
-            if choice   != 5:
+            if choice != 5:
                 program.do_choice(choice)
                 done = False if input('Продолжить? y/n ').lower() == 'y' else True
             else:
                 done = True
-
