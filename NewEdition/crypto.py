@@ -8,11 +8,16 @@ class Cripto:
     class for encoding and decoding data
 
     """
+    errors: int = 0
     key_file_path: str = "keyfile.key"
-    fernet = Fernet(open(key_file_path, 'rb').read())
+    try:
+        fernet = Fernet(open(key_file_path, 'rb').read())
+    except FileNotFoundError:
+        print('Отсутствует файл ключа\nВоспользуйтесь функцией создать ключ или поместите файл ключа в папку')
+        exit()
 
 
-    def generate_keyfile(self):
+    def _generate_keyfile(self):
         """
         Initial key file generation
 
@@ -42,3 +47,4 @@ class Cripto:
         """
         decrypted_string = self.fernet.decrypt(encrypted_string).decode()
         return decrypted_string
+
